@@ -1,0 +1,148 @@
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Scanner;
+
+public class Main {
+
+    private static final Map<String, Integer> ROMAN_NUMERALS = new HashMap<>();
+    static {
+        ROMAN_NUMERALS.put("I", 1);
+        ROMAN_NUMERALS.put("II", 2);
+        ROMAN_NUMERALS.put("III", 3);
+        ROMAN_NUMERALS.put("IV", 4);
+        ROMAN_NUMERALS.put("V", 5);
+        ROMAN_NUMERALS.put("VI", 6);
+        ROMAN_NUMERALS.put("VII", 7);
+        ROMAN_NUMERALS.put("VIII", 8);
+        ROMAN_NUMERALS.put("IX", 9);
+        ROMAN_NUMERALS.put("X", 10);
+    }
+
+    private static String[] splitInput(String input) {
+        String[] parts = input.split("\\s+");
+        if (parts.length != 3) {
+            throw new IllegalArgumentException("Неправильный формат ввода. Введите два числа и +,-,*,/ разделенные пробелами.");
+        }
+        return parts;
+    }
+
+    private static int[] parseNumbers(String[] parts) {
+        int a, b;
+        try {
+            a = Integer.parseInt(parts[0]);
+            b = Integer.parseInt(parts[2]);
+        } catch (NumberFormatException e) {
+            throw new IllegalArgumentException("Неправильный формат чисел. Введите числа от 1 до 10 включительно.");
+        }
+        if (a < 1 || a > 10 || b < 1 || b > 10) {
+            throw new IllegalArgumentException("Числа должны быть от 1 до 10 включительно.");
+        }
+        return new int[]{a, b};
+    }
+
+    private static int[] parseRomanNumbers(String[] parts) {
+        if (ROMAN_NUMERALS.containsKey(parts[0]) && ROMAN_NUMERALS.containsKey(parts[2])) {
+            return new int[]{ROMAN_NUMERALS.get(parts[0]), ROMAN_NUMERALS.get(parts[2])};
+        } else {
+            throw new IllegalArgumentException("Введены неправильные римские числа. Введите римские числа от I до X включительно.");
+        }
+    }
+
+    private static boolean isRomanNumeral(String input) {
+        return input.matches("[IVX]+");
+    }
+
+    private static int[] parseInput(String input) {
+        String[] parts = splitInput(input);
+        if (isRomanNumeral(parts[0]) && isRomanNumeral(parts[2])) {
+            return parseRomanNumbers(parts);
+        } else {
+            return parseNumbers(parts);
+        }
+    }
+
+    private static int performOperation(int a, int b, String op) {
+        int result;
+        switch (op) {
+            case "+":
+                result = a + b;
+                break;
+            case "-":
+                result = a - b;
+                break;
+            case "*":
+                result = a * b;
+                break;
+            case "/":
+                result = a / b;
+                break;
+            default:
+                throw new IllegalArgumentException("Неправильный оператор. Введите +, -, * или /.");
+        }
+        return result;
+    }
+
+    private static String toRomanNumeral(int num) {
+        if (num < 1 || num > 3999) {
+            throw new IllegalArgumentException("Число должно быть в диапазоне от 1 до 100 включительно.");
+        }
+        StringBuilder sb = new StringBuilder();
+        while (num >= 100) {
+            sb.append("C");
+            num -= 100;
+        }
+        while (num >= 90) {
+            sb.append("XC");
+            num -= 90;
+        }
+        while (num >= 50) {
+            sb.append("L");
+            num -= 50;
+        }
+        while (num >= 40) {
+            sb.append("XL");
+            num -= 40;
+        }
+        while (num >= 10) {
+            sb.append("X");
+            num -= 10;
+        }
+        while (num >= 9) {
+            sb.append("IX");
+            num -= 9;
+        }
+        while (num >= 5) {
+            sb.append("V");
+            num -= 5;
+        }
+        while (num >= 4) {
+            sb.append("IV");
+            num -= 4;
+        }
+        while (num >= 1) {
+            sb.append("I");
+            num -= 1;
+        }
+        return sb.toString();
+    }
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        while (true) {
+            System.out.println("Введите выражение (+, -, /, *), или нажмите q для выхода:");
+            String input = scanner.nextLine();
+
+            if (input.equalsIgnoreCase("q")) {
+                break;
+            }
+
+            int[] numbers = parseInput(input);
+            int result = performOperation(numbers[0], numbers[1], input.split("\\s+")[1]);
+
+            if (isRomanNumeral(input.split("\\s+")[0])) {
+                System.out.println(toRomanNumeral(result));
+            } else {
+                System.out.println(result);
+            }
+        }
+    }}
