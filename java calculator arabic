@@ -4,18 +4,18 @@ import java.util.Scanner;
 
 public class Main {
 
-    private static final Map<String, Integer> ROMAN_NUMERALS = new HashMap<>();
+    private static final Map<String, Integer> ROMANNUM = new HashMap<>();
     static {
-        ROMAN_NUMERALS.put("I", 1);
-        ROMAN_NUMERALS.put("II", 2);
-        ROMAN_NUMERALS.put("III", 3);
-        ROMAN_NUMERALS.put("IV", 4);
-        ROMAN_NUMERALS.put("V", 5);
-        ROMAN_NUMERALS.put("VI", 6);
-        ROMAN_NUMERALS.put("VII", 7);
-        ROMAN_NUMERALS.put("VIII", 8);
-        ROMAN_NUMERALS.put("IX", 9);
-        ROMAN_NUMERALS.put("X", 10);
+        ROMANNUM.put("I", 1);
+        ROMANNUM.put("II", 2);
+        ROMANNUM.put("III", 3);
+        ROMANNUM.put("IV", 4);
+        ROMANNUM.put("V", 5);
+        ROMANNUM.put("VI", 6);
+        ROMANNUM.put("VII", 7);
+        ROMANNUM.put("VIII", 8);
+        ROMANNUM.put("IX", 9);
+        ROMANNUM.put("X", 10);
     }
 
     private static String[] splitInput(String input) {
@@ -41,8 +41,8 @@ public class Main {
     }
 
     private static int[] parseRomanNumbers(String[] parts) {
-        if (ROMAN_NUMERALS.containsKey(parts[0]) && ROMAN_NUMERALS.containsKey(parts[2])) {
-            return new int[]{ROMAN_NUMERALS.get(parts[0]), ROMAN_NUMERALS.get(parts[2])};
+        if (ROMANNUM.containsKey(parts[0]) && ROMANNUM.containsKey(parts[2])) {
+            return new int[]{ROMANNUM.get(parts[0]), ROMANNUM.get(parts[2])};
         } else {
             throw new IllegalArgumentException("Введены неправильные римские числа. Введите римские числа от I до X включительно.");
         }
@@ -83,7 +83,7 @@ public class Main {
     }
 
     private static String toRomanNumeral(int num) {
-        if (num < 1 || num > 3999) {
+        if (num < 1 || num > 100) {
             throw new IllegalArgumentException("Число должно быть в диапазоне от 1 до 100 включительно.");
         }
         StringBuilder sb = new StringBuilder();
